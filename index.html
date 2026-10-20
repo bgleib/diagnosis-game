@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prehospital Medical Diagnostic Simulator</title>
+  <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Controls -->
+    <header class="app-header">
+      <div class="header-title">
+        <h1>🚑 Diagnostic EMS Simulator</h1>
+        <span class="badge" id="patient-id-badge">Patient ID: --</span>
+      </div>
+
+      <div class="header-controls">
+        <div class="control-group">
+          <label for="mode-select">Mode:</label>
+          <select id="mode-select">
+            <option value="realistic">Realistic (Prevalence Weighted)</option>
+            <option value="unicorn">Unicorn (Equal Probability)</option>
+          </select>
+        </div>
+
+        <div class="control-group toggle-group">
+          <label class="switch">
+            <input type="checkbox" id="toggle-numbers" checked>
+            <span class="slider round"></span>
+          </label>
+          <span class="toggle-label">Show Numeric Probabilities</span>
+        </div>
+
+        <div class="control-group toggle-group">
+          <label class="switch">
+            <input type="checkbox" id="toggle-differentials" checked>
+            <span class="slider round"></span>
+          </label>
+          <span class="toggle-label">Show Bayesian Assist</span>
+        </div>
+
+        <button id="btn-next-patient" class="btn btn-secondary">⚡ New Patient</button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <main class="dashboard-grid">
+
+      <!-- Panel 1: Patient Chart & Vitals -->
+      <section class="panel panel-chart">
+        <h2>📋 Patient Chart</h2>
+
+        <div class="chart-section">
+          <h3>Chief Complaint</h3>
+          <div id="chief-complaint-box" class="callout callout-warning">
+            <strong id="cc-title">Loading...</strong>
+            <p id="cc-description">---</p>
+          </div>
+        </div>
+
+        <div class="chart-section">
+          <h3>Investigations Ordered (<span id="investigations-count">0</span>)</h3>
+          <ul id="ordered-investigations-list" class="ordered-list">
+            <li class="empty-text">No investigations ordered yet.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Panel 2: Investigation Ordering & Handbook -->
+      <section class="panel panel-investigations">
+        <h2>🔬 Ordering Menu & Handbook</h2>
+        <p class="section-help">Select an investigation to run on the patient:</p>
+
+        <div id="investigations-menu" class="investigations-menu">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- Panel 3: Diagnostic Results Log & Differential Diagnosis -->
+      <section class="panel panel-results">
+        <h2>📊 Results Log & Differential</h2>
+
+        <div class="results-section">
+          <h3>Findings Log</h3>
+          <div id="findings-log" class="findings-log">
+            <p class="empty-text">Run an investigation from the center menu to gather evidence.</p>
+          </div>
+        </div>
+
+        <div class="results-section">
+          <h3>Differential Diagnoses</h3>
+          <div id="differential-container" class="differential-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="results-action">
+          <button id="btn-submit-diagnosis" class="btn btn-primary btn-large" disabled>
+            🏥 Submit Selected Diagnosis
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- End Game Modal -->
+  <div id="modal-backdrop" class="modal-backdrop hidden">
+    <div class="modal">
+      <div id="modal-header" class="modal-header">
+        <h2 id="modal-title">Case Evaluation</h2>
+      </div>
+      <div class="modal-body">
+        <div id="modal-score-badge" class="score-badge">Score: 1000</div>
+
+        <div class="modal-details">
+          <div class="detail-row">
+            <span>Submitted Diagnosis:</span>
+            <strong id="modal-submitted">--</strong>
+          </div>
+          <div class="detail-row">
+            <span>True Hidden Diagnosis:</span>
+            <strong id="modal-true">--</strong>
+          </div>
+          <div class="detail-row">
+            <span>Total Investigations Run:</span>
+            <strong id="modal-tests-count">0</strong>
+          </div>
+          <div class="detail-row">
+            <span>Model Probability for Submitted:</span>
+            <strong id="modal-prob">0%</strong>
+          </div>
+        </div>
+
+        <div class="modal-recap">
+          <h3>Patient Description</h3>
+          <p id="modal-diagnosis-desc" class="modal-desc"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-modal-next" class="btn btn-primary btn-large">Next Patient ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="src/js/ui.js"></script>
+</body>
+</html>
